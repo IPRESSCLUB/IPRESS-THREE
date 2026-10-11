@@ -35,7 +35,8 @@ This helper only updates metadata; no build step is required. Social apps may ca
 | `index.html` | Semantic page, exactly two native links, SEO and social metadata |
 | `styles.css` | Responsive composition, typography, palette, focus styles and motion |
 | `script.js` | Optional pointer-responsive highlights and restrained parallax |
-| `assets/ipress-logo.png` | Original IPRESS logo, unchanged |
+| `assets/ipress-logo.png` | Display version: identical logo pixels, with only the surrounding transparent canvas omitted |
+| `assets/ipress-logo-original.png` | Your complete uploaded PNG, preserved byte for byte |
 | `assets/space-grotesk.woff` | Local display font |
 | `assets/ibm-plex-mono.woff` | Local micro-typography font |
 | `assets/social-preview.png` | Ready-made 1200 × 630 sharing preview |
@@ -61,7 +62,7 @@ Both are full-card links that open in a new tab with `noopener noreferrer`. Thei
 
 - White, blue and green only, including tinted backgrounds and shadows.
 - Space Grotesk paired with IBM Plex Mono; fonts are served locally.
-- The supplied project's 296 × 61 PNG logo is preserved byte for byte. Its original raster resolution is retained; it is not redrawn, recolored, filtered, cropped or upscaled into a replacement.
+- Your uploaded 519 × 481 PNG is preserved byte for byte as `assets/ipress-logo-original.png`. Its visible artwork occupies 296 × 61 pixels and matches the existing display asset pixel for pixel. The display version omits only empty transparent margins; no logo pixels are changed, recolored, redrawn or retouched.
 - Desktop: editorial typography paired with the framed logo, then two equal-width destination cards.
 - Mobile: logo first, a compact heading, and stacked cards with generous touch targets.
 - Brief staggered entrance motion; no continuous animation loops.
@@ -84,4 +85,4 @@ To regenerate the social preview after changing its design, install Pillow in yo
 
 ## Rights and credits
 
-IPRESS branding belongs to its respective owner. The original logo was taken from `assets/ipress.png` in the provided `IPRESS-Motion-GitHub.zip`; it is identical to the logo served by the official website. Space Grotesk and IBM Plex Mono are included under the SIL Open Font License; their license notices are retained alongside the fonts.
+IPRESS branding belongs to its respective owner. Your supplied `WhatsApp_Image_2025-11-28_at_7.27.21_PM__1_-removebg-preview (2).png` is included unchanged as `assets/ipress-logo-original.png`. The display asset from the earlier IPRESS project was verified against the upload: every pixel of the visible logo is identical. Space Grotesk and IBM Plex Mono are included under the SIL Open Font License; their license notices are retained alongside the fonts.
