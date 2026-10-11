@@ -58,9 +58,13 @@
     cards.forEach(card => track(card, (x, y) => {
       card.style.setProperty('--pointer-x', `${(x * 100).toFixed(1)}%`);
       card.style.setProperty('--pointer-y', `${(y * 100).toFixed(1)}%`);
+      card.style.setProperty('--tilt-x', `${((.5 - y) * 5).toFixed(2)}deg`);
+      card.style.setProperty('--tilt-y', `${((x - .5) * 6).toFixed(2)}deg`);
     }, () => {
       card.style.removeProperty('--pointer-x');
       card.style.removeProperty('--pointer-y');
+      card.style.removeProperty('--tilt-x');
+      card.style.removeProperty('--tilt-y');
     }));
 
     detach = () => cleanups.forEach(cleanup => cleanup());

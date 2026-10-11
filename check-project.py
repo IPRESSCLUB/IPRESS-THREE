@@ -38,7 +38,8 @@ for tag, attrs in doc.tags:
         for identifier in attrs.get(key, '').split():
             assert identifier in ids, f'Missing accessibility target: {identifier}'
     if tag == 'img':
-        assert attrs.get('alt') and attrs.get('width') and attrs.get('height')
+        assert 'alt' in attrs and attrs.get('width') and attrs.get('height')
+        assert attrs['alt'] or attrs.get('aria-hidden') == 'true'
     if tag == 'svg':
         assert attrs.get('aria-hidden') == 'true'
     for key in ['src', 'href']:
@@ -55,7 +56,8 @@ assert ':focus-visible' in css
 assert '(forced-colors:active)' in css
 assert not re.search(r'animation[^;{}]*\binfinite\b', css)
 assert not re.search(r'@import|https?://', css), 'CSS must be self-contained'
-assert html.count('<main>') == 1 and html.count('<h1>') == 1
+assert sum(tag == 'main' for tag, _ in doc.tags) == 1
+assert sum(tag == 'h1' for tag, _ in doc.tags) == 1
 assert not re.search(r'<(?:button|form|iframe)\b', html)
 
 metadata = {a.get('property', a.get('name')): a.get('content') for t, a in doc.tags if t == 'meta'}
@@ -68,6 +70,8 @@ assert (public / '.nojekyll').is_file()
 png = (public / 'assets/social-preview.png').read_bytes()
 assert png[:8] == b'\x89PNG\r\n\x1a\n'
 assert struct.unpack('>II', png[16:24]) == (1200, 630)
+original = (public / 'assets/ipress-logo-original.png').read_bytes()
+assert hashlib.sha256(original).hexdigest() == '3d9f9084d84835f366f69b583e956c51243e5776b6c908a917c19558f997d26e', 'Uploaded original changed'
 logo = (public / 'assets/ipress-logo.png').read_bytes()
 assert hashlib.sha256(logo).hexdigest() == '244a4daafd21f384e1bbaa777c5664ab366a311c27701edc9bb26e50dc0fcdd6', 'Original logo changed'
 
@@ -77,14 +81,14 @@ def luminance(hex_color):
     return sum(c*w for c, w in zip(rgb, [.2126, .7152, .0722]))
 
 pairs = [
-    ('Body copy', '#496b80', '#f8fafc'),
-    ('Blue heading', '#0b5384', '#f8fafc'),
-    ('Green heading', '#496e34', '#f8fafc'),
-    ('Website title', '#ffffff', '#0b5384'),
-    ('Website description', '#dceaf4', '#0b5384'),
-    ('Community title', '#103952', '#eaf2e5'),
-    ('Community description', '#466344', '#eaf2e5'),
-    ('Logo caption', '#496b80', '#ffffff'),
+    ('Body copy', '#476781', '#edf5fc'),
+    ('Main heading', '#183e66', '#edf5fc'),
+    ('Green heading', '#426f35', '#edf5fc'),
+    ('Website title', '#ffffff', '#2063b1'),
+    ('Website description', '#e4f1ff', '#2063b1'),
+    ('Community title', '#26472f', '#d4eab5'),
+    ('Community description', '#3d5a33', '#d4eab5'),
+    ('Prop notes', '#466b89', '#edf5fc'),
 ]
 for name, foreground, background in pairs:
     values = sorted([luminance(foreground), luminance(background)])
@@ -92,7 +96,7 @@ for name, foreground, background in pairs:
     assert ratio >= 4.5, f'{name} contrast {ratio:.2f}:1 below AA for normal text'
     print(f'PASS {name}: {ratio:.2f}:1 contrast')
 
-critical = ['index.html', 'styles.css', 'script.js', 'assets/ipress-logo.png', 'assets/space-grotesk.woff', 'assets/ibm-plex-mono.woff']
+critical = ['index.html', 'styles.css', 'script.js', 'assets/ipress-logo.png', 'assets/clay-camera.webp', 'assets/bricolage-grotesque.woff', 'assets/dm-sans.woff', 'assets/dm-sans-semibold.woff']
 payload = sum((public / p).stat().st_size for p in critical)
 print(f'PASS: exactly two destinations, security attributes, image/ARIA labels, local assets, metadata, original logo, reduced motion and CSS structure')
 print(f'Initial page resources: {payload:,} bytes before HTTP compression; social preview and source TTFs are not page loads.')

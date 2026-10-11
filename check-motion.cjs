@@ -52,6 +52,8 @@ desktop.cards[0].emit('pointermove', {pointerType:'mouse', clientX:900, clientY:
 desktop.tick();
 assert.equal(desktop.cards[0].values.get('--pointer-x'), '100.0%');
 assert.equal(desktop.cards[0].values.get('--pointer-y'), '0.0%');
+assert.equal(desktop.cards[0].values.get('--tilt-x'), '2.50deg');
+assert.equal(desktop.cards[0].values.get('--tilt-y'), '3.00deg');
 desktop.art.emit('pointerleave');
 assert.equal(desktop.art.values.size, 0);
 desktop.art.emit('pointermove', { pointerType:'mouse', clientX:210, clientY:120 });
